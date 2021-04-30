@@ -1,6 +1,8 @@
 package sample;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
 public class Tradutor {
@@ -13,9 +15,14 @@ public class Tradutor {
     static String[] bicondicional = {"somente se", "só se"};
     static String[] negacao = {"não"};
 
-    static String[] total = {"Nenhum", "Para todo", "Qualquer", "Qualquer um", "Nada", "Tudo", "Todo", "Existe um", "Existe algum", "Há um", "Há uma", "Então", "É", "Implica", "E", "Com um", "ou", "Ou um", "somente se", "só se", "não"};
 
-    public static String tradutor(String frase) {
+    public static String tradutor(String entrada) {
+
+        String[] total = {"Nenhum", "Para todo", "Qualquer", "Qualquer um", "Nada", "Tudo", "Todo", "Existe um", "Existe algum", "Há um", "Há uma", "Então", "É", "Implica", "E", "Com um", "ou", "Ou um", "somente se", "só se", "não"};
+
+
+        String[] frase = entrada.split(" ");
+
 
         Vector<String> saida = new Vector<>(999);
         StringBuilder saidaConcatenada = new StringBuilder();
@@ -25,14 +32,15 @@ public class Tradutor {
         boolean flagAnterior = false;
         boolean flagPosterior = false;
         boolean freio = false;
+        boolean flag = false;
 
-        for (String palavra : frase.split(" ")) {
+        for (String palavra : frase) {
 
             x++;
 
             /*if(palavra.equalsIgnoreCase("que")){
-                String palavraAnterior = frase.split(" ")[x-2];
-                String palavraPosterior = frase.split(" ")[x];
+                String palavraAnterior = frase[x-2];
+                String palavraPosterior = frase[x];
 
                 for(String tot : total){
                     if(palavraAnterior.equalsIgnoreCase(tot)){
@@ -58,19 +66,19 @@ public class Tradutor {
             for (String qtdUni : quantificadorUniversal) {
                 System.out.println("qtdUni: " + palavra);
                 if (palavra.equalsIgnoreCase(qtdUni)) {
-                    saida.add(0,"∀x");
+                    saida.add(0, "∀x");
                     break;
                 } else if (palavra.equalsIgnoreCase("Para")) {
-                    if (x < frase.split(" ").length) {
-                        if (frase.split(" ")[x].equalsIgnoreCase("todo")) {
-                            saida.add(0,"∀x");
+                    if (x < frase.length) {
+                        if (frase[x].equalsIgnoreCase("todo")) {
+                            saida.add(0, "∀x");
                             break;
                         }
                     }
                 } else if (palavra.equalsIgnoreCase("Qualquer")) {
-                    if (x < frase.split(" ").length) {
-                        if (frase.split(" ")[x].equalsIgnoreCase("um")) {
-                            saida.add(0,"∀x");
+                    if (x < frase.length) {
+                        if (frase[x].equalsIgnoreCase("um")) {
+                            saida.add(0, "∀x");
                             break;
                         }
                     }
@@ -81,25 +89,25 @@ public class Tradutor {
             for (String qtdExi : quantificadorExistencial) {
                 System.out.println("qtdExi: " + palavra);
                 if (palavra.equalsIgnoreCase(qtdExi)) {
-                    saida.add(0,"∃x");
+                    saida.add(0, "∃x");
                     break;
                 } else if (palavra.equalsIgnoreCase("Existe")) {
-                    if (x < frase.split(" ").length) {
-                        if (frase.split(" ")[x].equalsIgnoreCase("um")) {
-                            saida.add(0,"∃x");
+                    if (x < frase.length) {
+                        if (frase[x].equalsIgnoreCase("um")) {
+                            saida.add(0, "∃x");
                             break;
-                        } else if (frase.split(" ")[x].equalsIgnoreCase("algum")) {
-                            saida.add(0,"∃x");
+                        } else if (frase[x].equalsIgnoreCase("algum")) {
+                            saida.add(0, "∃x");
                             break;
                         }
                     }
                 } else if (palavra.equalsIgnoreCase("Há")) {
-                    if (x < frase.split(" ").length) {
-                        if (frase.split(" ")[x].equalsIgnoreCase("um")) {
-                            saida.add(0,"∃x");
+                    if (x < frase.length) {
+                        if (frase[x].equalsIgnoreCase("um")) {
+                            saida.add(0, "∃x");
                             break;
-                        } else if (frase.split(" ")[x].equalsIgnoreCase("uma")) {
-                            saida.add(0,"∃x");
+                        } else if (frase[x].equalsIgnoreCase("uma")) {
+                            saida.add(0, "∃x");
                             break;
                         }
                     }
@@ -110,29 +118,56 @@ public class Tradutor {
                 System.out.println("imp: " + palavra);
                 if (palavra.equalsIgnoreCase(imp)) {
 
-                    if(frase.split(" ")[x].equalsIgnoreCase("um") || frase.split(" ")[x].equalsIgnoreCase("uma")){
-                        saida.add(frase.split(" ")[x - 2] + "(x)");
+                    if (frase[x].equalsIgnoreCase("um") || frase[x].equalsIgnoreCase("uma")) {
+
+                        for (String tot : total) {
+                            if (frase[x - 2].equalsIgnoreCase(tot)) {
+                                freio = true;
+                                flag = true;
+                                break;
+                            }
+                        }
+
+                        if (!flag) {
+                            saida.add(frase[x - 2] + "(x)");
+
+                            saida.add("->");
+
+                            if (frase[0].equalsIgnoreCase("Nenhum")) {
+                                saida.add("¬");
+                            }
+
+
+                        }
 
                         saida.add("->");
 
-                        if (frase.split(" ")[0].equalsIgnoreCase("Nenhum")) {
-                            saida.add("¬");
-                        }
-
-                        saida.add(frase.split(" ")[x + 1] + "(x)");
+                        saida.add(frase[x + 1] + "(x)");
 
                         break;
+
                     }
 
-                    saida.add(frase.split(" ")[x - 2] + "(x)");
+                    for (String tot : total) {
+                        if (frase[x - 2].equalsIgnoreCase(tot)) {
+                            freio = true;
+                            flag = true;
+                            break;
+                        }
+                    }
+
+                    if(!flag) {
+                        saida.add(frase[x - 2] + "(x)");
+                    }
+
 
                     saida.add("->");
 
-                    if (frase.split(" ")[0].equalsIgnoreCase("Nenhum")) {
+                    if (frase[0].equalsIgnoreCase("Nenhum")) {
                         saida.add("¬");
                     }
 
-                    saida.add(frase.split(" ")[x] + "(x)");
+                    saida.add(frase[x] + "(x)");
 
                     break;
 
@@ -145,41 +180,68 @@ public class Tradutor {
                 System.out.println("conj: " + palavra);
 
                 if (palavra.equalsIgnoreCase(conj)) {
-                    saida.add(frase.split(" ")[x - 2] + "(x)");
+                    saida.add(frase[x - 2] + "(x)");
 
                     saida.add("∧");
 
-                    for (int i = x; i < frase.split(" ").length; i++) {
-                        variavel = variavel + frase.split(" ")[i];
-                        for(String tot : total){
-                            System.out.println("entrou aq");
-                            if(frase.split(" ")[i+1].equalsIgnoreCase(tot)){
-                                System.out.println("BREAAAAAAAAAAAAAAAAAAAAAKKK");
+                    for (int i = x; i < frase.length; i++) {
+
+                        for (String tot : total) {
+                            System.out.println(frase[i]);
+                            if (frase[i + 1].equalsIgnoreCase(tot) || i+1 == frase.length-1) {
                                 freio = true;
+                                flag = true;
+                                break;
                             }
+
+//                            System.out.println("entrou aq");
+                            /*if(frase[i+1].equalsIgnoreCase(tot)){
+                                System.out.println("BREAAAAAAAAAAAAAAAAAAAAAKKK");
+
+
+                                List<String> listaTemp = new ArrayList<String>(Arrays.asList(frase));
+                                listaTemp.remove(i);
+                                frase = listaTemp.toArray(new String[0]);
+
+                                System.out.println("remove: "+Arrays.toString(frase));
+                            }*/
                         }
 
-                        if(freio){
+                        if (flag) {
+                            variavel = variavel + "(" + frase[i] + ")";
+                            List<String> listaTemp = new ArrayList<String>(Arrays.asList(total));
+                            System.out.println("frase[i] "+frase[i]);
+                            listaTemp.add(frase[i]);
+                            total = listaTemp.toArray(new String[0]);
+                        } else {
+                            variavel = variavel + frase[i];
+                        }
+
+                        if (freio) {
                             break;
                         }
                     }
 
+                    if (flag) {
+                        saida.add(variavel);
+                    } else {
+                        saida.add(variavel + "(x)");
+                    }
 
-
-                    saida.add(variavel + "(x)");
+                    flag = false;
 
                 } else if (palavra.equalsIgnoreCase("Com")) {
-                    if (x < frase.split(" ").length) {
-                        if (frase.split(" ")[x].equalsIgnoreCase("um")) {
-                            saida.add(frase.split(" ")[x - 2] + "(x)");
+                    if (x < frase.length) {
+                        if (frase[x].equalsIgnoreCase("um")) {
+                            saida.add(frase[x - 2] + "(x)");
 
                             saida.add("∧");
 
-                            for (int i = x + 1; i < frase.split(" ").length; i++) {
-                                variavel = variavel + frase.split(" ")[i];
-                                for(String tot : total){
+                            for (int i = x + 1; i < frase.length; i++) {
+                                variavel = variavel + frase[i];
+                                for (String tot : total) {
                                     System.out.println("entrou aq");
-                                    if(frase.split(" ")[i].equalsIgnoreCase(tot)){
+                                    if (frase[i].equalsIgnoreCase(tot)) {
                                         System.out.println("BREAAAAAAAAAAAAAAAAAAAAAKKK");
                                         break;
                                     }
@@ -197,21 +259,21 @@ public class Tradutor {
                 System.out.println("disj: " + palavra);
 
                 if (palavra.equalsIgnoreCase(disj)) {
-                    saida.add(frase.split(" ")[x - 2] + "(x)");
+                    saida.add(frase[x - 2] + "(x)");
 
                     saida.add("∨");
 
-                    if (frase.split(" ")[x].equalsIgnoreCase("um")) {
-                        for (int i = x + 1; i < frase.split(" ").length; i++) {
-                            variavel = variavel + frase.split(" ")[i];
+                    if (frase[x].equalsIgnoreCase("um")) {
+                        for (int i = x + 1; i < frase.length; i++) {
+                            variavel = variavel + frase[i];
                         }
-                    } else if (frase.split(" ")[x].equalsIgnoreCase("uma")) {
-                        for (int i = x + 1; i < frase.split(" ").length; i++) {
-                            variavel = variavel + frase.split(" ")[i];
+                    } else if (frase[x].equalsIgnoreCase("uma")) {
+                        for (int i = x + 1; i < frase.length; i++) {
+                            variavel = variavel + frase[i];
                         }
                     } else {
-                        for (int i = x; i < frase.split(" ").length; i++) {
-                            variavel = variavel + frase.split(" ")[i];
+                        for (int i = x; i < frase.length; i++) {
+                            variavel = variavel + frase[i];
                         }
                     }
 
@@ -237,7 +299,7 @@ public class Tradutor {
                 if (palavra.equalsIgnoreCase(neg)) {
                     saida.add("¬");
 
-                    saida.add(frase.split(" ")[x] + "(" + frase.split(" ")[x-2] + ", x)");
+                    saida.add(frase[x] + "(" + frase[x - 2] + ", x)");
 
 //                    TODO: Scrooge
 
@@ -252,7 +314,6 @@ public class Tradutor {
                 saidaConcatenada.append(palavra).append(" ");
             }
         }
-
 
 
         return saidaConcatenada.toString();
