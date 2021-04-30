@@ -5,8 +5,10 @@ import java.util.Vector;
 public class Tradutor {
     static String[] quantificadorUniversal = {"Nenhum", "Para todo", "Qualquer um"};
     static String[] quantificadorExistencial = {"Existe um", "Existe algum", "Há um", "Há uma"};
-    static String[] implica = {"Então", "É", "Implica"};
+    static String[] condicional = {"Então", "É", "Implica"};
     static String[] conjuncao = {"E", "Com um"};
+    static String[] disjuncao = {"ou", "Ou um"};
+    static String[] bicondicional = {"somente se", "só se"};
 
     public static String tradutor(String frase) {
 
@@ -71,7 +73,7 @@ public class Tradutor {
                 }
             }
 
-            for (String imp : implica) {
+            for (String imp : condicional) {
                 System.out.println("imp: " + palavra);
                 if (palavra.equalsIgnoreCase(imp)) {
 
@@ -121,9 +123,32 @@ public class Tradutor {
                         }
                     }
                 }
-
             }
 
+            for (String disj : disjuncao) {
+                System.out.println("disj: " + palavra);
+
+                if (palavra.equalsIgnoreCase(disj)) {
+                    saida.add(frase.split(" ")[x - 2] + "(x)");
+
+                    saida.add("∨");
+
+                    if (frase.split(" ")[x].equalsIgnoreCase("um")) {
+//                        System.out.println("caiu 1");
+                        for (int i = x + 1; i < frase.split(" ").length; i++) {
+                            variavel = variavel + frase.split(" ")[i];
+                        }
+                    } else {
+//                        System.out.println("caiu 2");
+                        for (int i = x; i < frase.split(" ").length; i++) {
+                            variavel = variavel + frase.split(" ")[i];
+                        }
+                    }
+
+                    saida.add(variavel + "(x)");
+
+                }
+            }
         }
 
         for (String palavra : saida) {
