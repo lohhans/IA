@@ -25,14 +25,18 @@ public class Tradutor {
                     saida.add("∀x");
                     break;
                 } else if (palavra.equalsIgnoreCase("Para")) {
-                    if (frase.split(" ")[x].equalsIgnoreCase("todo")) {
-                        saida.add("∀x");
-                        break;
+                    if (x < frase.split(" ").length) {
+                        if (frase.split(" ")[x].equalsIgnoreCase("todo")) {
+                            saida.add("∀x");
+                            break;
+                        }
                     }
                 } else if (palavra.equalsIgnoreCase("Qualquer")) {
-                    if (frase.split(" ")[x].equalsIgnoreCase("um")) {
-                        saida.add("∀x");
-                        break;
+                    if (x < frase.split(" ").length) {
+                        if (frase.split(" ")[x].equalsIgnoreCase("um")) {
+                            saida.add("∀x");
+                            break;
+                        }
                     }
                 }
 
@@ -79,8 +83,6 @@ public class Tradutor {
                     }
 
                     saida.add(frase.split(" ")[x] + "(x)");
-
-                    System.out.println(frase.split(" ")[x - 2]);
 
                     break;
                 }

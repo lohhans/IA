@@ -21,8 +21,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        Tradutor.tradutor("Nenhum homem é extraterrestre");
-
         launch(args);
     }
 
