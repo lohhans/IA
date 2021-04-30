@@ -3,12 +3,13 @@ package sample;
 import java.util.Vector;
 
 public class Tradutor {
-    static String[] quantificadorUniversal = {"Nenhum", "Para todo", "Qualquer um"};
+    static String[] quantificadorUniversal = {"Nenhum", "Para todo", "Qualquer um", "Nada", "Tudo"};
     static String[] quantificadorExistencial = {"Existe um", "Existe algum", "Há um", "Há uma"};
     static String[] condicional = {"Então", "É", "Implica"};
     static String[] conjuncao = {"E", "Com um"};
     static String[] disjuncao = {"ou", "Ou um"};
     static String[] bicondicional = {"somente se", "só se"};
+    static String[] negacao = {"não"};
 
     public static String tradutor(String frase) {
 
@@ -25,19 +26,19 @@ public class Tradutor {
             for (String qtdUni : quantificadorUniversal) {
                 System.out.println("qtdUni: " + palavra);
                 if (palavra.equalsIgnoreCase(qtdUni)) {
-                    saida.add("∀x");
+                    saida.add(0,"∀x");
                     break;
                 } else if (palavra.equalsIgnoreCase("Para")) {
                     if (x < frase.split(" ").length) {
                         if (frase.split(" ")[x].equalsIgnoreCase("todo")) {
-                            saida.add("∀x");
+                            saida.add(0,"∀x");
                             break;
                         }
                     }
                 } else if (palavra.equalsIgnoreCase("Qualquer")) {
                     if (x < frase.split(" ").length) {
                         if (frase.split(" ")[x].equalsIgnoreCase("um")) {
-                            saida.add("∀x");
+                            saida.add(0,"∀x");
                             break;
                         }
                     }
@@ -48,25 +49,25 @@ public class Tradutor {
             for (String qtdExi : quantificadorExistencial) {
                 System.out.println("qtdExi: " + palavra);
                 if (palavra.equalsIgnoreCase(qtdExi)) {
-                    saida.add("∃x");
+                    saida.add(0,"∃x");
                     break;
                 } else if (palavra.equalsIgnoreCase("Existe")) {
                     if (x < frase.split(" ").length) {
                         if (frase.split(" ")[x].equalsIgnoreCase("um")) {
-                            saida.add("∃x");
+                            saida.add(0,"∃x");
                             break;
                         } else if (frase.split(" ")[x].equalsIgnoreCase("algum")) {
-                            saida.add("∃x");
+                            saida.add(0,"∃x");
                             break;
                         }
                     }
                 } else if (palavra.equalsIgnoreCase("Há")) {
                     if (x < frase.split(" ").length) {
                         if (frase.split(" ")[x].equalsIgnoreCase("um")) {
-                            saida.add("∃x");
+                            saida.add(0,"∃x");
                             break;
                         } else if (frase.split(" ")[x].equalsIgnoreCase("uma")) {
-                            saida.add("∃x");
+                            saida.add(0,"∃x");
                             break;
                         }
                     }
@@ -134,18 +135,40 @@ public class Tradutor {
                     saida.add("∨");
 
                     if (frase.split(" ")[x].equalsIgnoreCase("um")) {
-//                        System.out.println("caiu 1");
                         for (int i = x + 1; i < frase.split(" ").length; i++) {
                             variavel = variavel + frase.split(" ")[i];
                         }
                     } else {
-//                        System.out.println("caiu 2");
                         for (int i = x; i < frase.split(" ").length; i++) {
                             variavel = variavel + frase.split(" ")[i];
                         }
                     }
 
                     saida.add(variavel + "(x)");
+
+                }
+            }
+
+            //Scrooge não ama nada que é estranho
+            //Saída: ∀ t estranho (t) → ¬ ama (Scrooge, t)
+
+            for (String bic : bicondicional) {
+                System.out.println("bic: " + palavra);
+
+                if (palavra.equalsIgnoreCase(bic)) {
+                    System.out.println(":(");
+                }
+            }
+
+            for (String neg : negacao) {
+                System.out.println("neg: " + palavra);
+
+                if (palavra.equalsIgnoreCase(neg)) {
+                    saida.add("¬");
+
+                    saida.add(frase.split(" ")[x] + "(" + frase.split(" ")[x-2] + ", x)");
+
+//                    TODO: Scrooge
 
                 }
             }
