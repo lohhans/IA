@@ -14,6 +14,7 @@ public class Tradutor {
         StringBuilder saidaConcatenada = new StringBuilder();
 
         int x = 0;
+        String variavel = "";
 
         for (String palavra : frase.split(" ")) {
 
@@ -85,6 +86,40 @@ public class Tradutor {
                     saida.add(frase.split(" ")[x] + "(x)");
 
                     break;
+                }
+
+            }
+
+            for (String conj : conjuncao) {
+                System.out.println("conj: " + palavra);
+
+                if (palavra.equalsIgnoreCase(conj)) {
+                    saida.add(frase.split(" ")[x - 2] + "(x)");
+
+                    saida.add("∧");
+
+                    for (int i = x; i < frase.split(" ").length; i++) {
+                        variavel = variavel + frase.split(" ")[i];
+                    }
+
+
+                    saida.add(variavel + "(x)");
+
+                } else if (palavra.equalsIgnoreCase("Com")) {
+                    if (x < frase.split(" ").length) {
+                        if (frase.split(" ")[x].equalsIgnoreCase("um")) {
+                            saida.add(frase.split(" ")[x - 2] + "(x)");
+
+                            saida.add("∧");
+
+                            for (int i = x + 1; i < frase.split(" ").length; i++) {
+                                variavel = variavel + frase.split(" ")[i];
+                            }
+
+                            saida.add(variavel + "(x)");
+                            break;
+                        }
+                    }
                 }
 
             }
