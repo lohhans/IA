@@ -27,3 +27,31 @@ public class Main extends Application {
 }
 
 // ∀, ∃, ¬, ∧, ∨, ->, <->
+
+/*
+
+Nenhum homem é extraterrestre
+
+Há uma rena com um focinho vermelho
+
+Scrooge não ama nada que é estranho
+
+Todo mundo que ama Papai Noel gosta de renas
+
+Qualquer um que monta qualquer moto Harley é um cara durão
+
+Todo motociclista pilota uma Harley ou uma BMW
+
+Qualquer pessoa que monta um BMW é um yuppie
+
+Todo yuppie é advogado
+
+Qualquer garota legal não namora alguém que é durao
+
+Mary é uma garota legal e John é um motociclista
+
+John não é um advogado, entao Mary não namora John
+
+Qualquer coisa com um focinho vermelho é um palhaço ou estranho
+
+ */

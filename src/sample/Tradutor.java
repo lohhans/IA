@@ -1,15 +1,19 @@
 package sample;
 
+import java.util.Arrays;
 import java.util.Vector;
 
 public class Tradutor {
-    static String[] quantificadorUniversal = {"Nenhum", "Para todo", "Qualquer um", "Nada", "Tudo"};
+
+    static String[] quantificadorUniversal = {"Nenhum", "Para todo", "Qualquer", "Qualquer um", "Nada", "Tudo", "Todo"};
     static String[] quantificadorExistencial = {"Existe um", "Existe algum", "Há um", "Há uma"};
     static String[] condicional = {"Então", "É", "Implica"};
-    static String[] conjuncao = {"E", "Com um"};
+    static String[] conjuncao = {"E", "Com um", "que"};
     static String[] disjuncao = {"ou", "Ou um"};
     static String[] bicondicional = {"somente se", "só se"};
     static String[] negacao = {"não"};
+
+    static String[] total = {"Nenhum", "Para todo", "Qualquer", "Qualquer um", "Nada", "Tudo", "Todo", "Existe um", "Existe algum", "Há um", "Há uma", "Então", "É", "Implica", "E", "Com um", "ou", "Ou um", "somente se", "só se", "não"};
 
     public static String tradutor(String frase) {
 
@@ -18,10 +22,38 @@ public class Tradutor {
 
         int x = 0;
         String variavel = "";
+        boolean flagAnterior = false;
+        boolean flagPosterior = false;
+        boolean freio = false;
 
         for (String palavra : frase.split(" ")) {
 
             x++;
+
+            /*if(palavra.equalsIgnoreCase("que")){
+                String palavraAnterior = frase.split(" ")[x-2];
+                String palavraPosterior = frase.split(" ")[x];
+
+                for(String tot : total){
+                    if(palavraAnterior.equalsIgnoreCase(tot)){
+                        flagAnterior = true;
+                    }
+                }
+
+                for(String tot : total){
+                    if(palavraPosterior.equalsIgnoreCase(tot)){
+                        flagPosterior = true;
+                    }
+                }
+
+                if(!flagAnterior){
+                    saida.add(palavraAnterior + "(x)");
+                }
+
+                if(!flagPosterior){
+                    saida.add(palavraPosterior + "(y)");
+                }
+            }*/
 
             for (String qtdUni : quantificadorUniversal) {
                 System.out.println("qtdUni: " + palavra);
@@ -78,6 +110,20 @@ public class Tradutor {
                 System.out.println("imp: " + palavra);
                 if (palavra.equalsIgnoreCase(imp)) {
 
+                    if(frase.split(" ")[x].equalsIgnoreCase("um") || frase.split(" ")[x].equalsIgnoreCase("uma")){
+                        saida.add(frase.split(" ")[x - 2] + "(x)");
+
+                        saida.add("->");
+
+                        if (frase.split(" ")[0].equalsIgnoreCase("Nenhum")) {
+                            saida.add("¬");
+                        }
+
+                        saida.add(frase.split(" ")[x + 1] + "(x)");
+
+                        break;
+                    }
+
                     saida.add(frase.split(" ")[x - 2] + "(x)");
 
                     saida.add("->");
@@ -89,6 +135,8 @@ public class Tradutor {
                     saida.add(frase.split(" ")[x] + "(x)");
 
                     break;
+
+
                 }
 
             }
@@ -103,7 +151,19 @@ public class Tradutor {
 
                     for (int i = x; i < frase.split(" ").length; i++) {
                         variavel = variavel + frase.split(" ")[i];
+                        for(String tot : total){
+                            System.out.println("entrou aq");
+                            if(frase.split(" ")[i+1].equalsIgnoreCase(tot)){
+                                System.out.println("BREAAAAAAAAAAAAAAAAAAAAAKKK");
+                                freio = true;
+                            }
+                        }
+
+                        if(freio){
+                            break;
+                        }
                     }
+
 
 
                     saida.add(variavel + "(x)");
@@ -117,6 +177,13 @@ public class Tradutor {
 
                             for (int i = x + 1; i < frase.split(" ").length; i++) {
                                 variavel = variavel + frase.split(" ")[i];
+                                for(String tot : total){
+                                    System.out.println("entrou aq");
+                                    if(frase.split(" ")[i].equalsIgnoreCase(tot)){
+                                        System.out.println("BREAAAAAAAAAAAAAAAAAAAAAKKK");
+                                        break;
+                                    }
+                                }
                             }
 
                             saida.add(variavel + "(x)");
@@ -135,6 +202,10 @@ public class Tradutor {
                     saida.add("∨");
 
                     if (frase.split(" ")[x].equalsIgnoreCase("um")) {
+                        for (int i = x + 1; i < frase.split(" ").length; i++) {
+                            variavel = variavel + frase.split(" ")[i];
+                        }
+                    } else if (frase.split(" ")[x].equalsIgnoreCase("uma")) {
                         for (int i = x + 1; i < frase.split(" ").length; i++) {
                             variavel = variavel + frase.split(" ")[i];
                         }
@@ -181,6 +252,7 @@ public class Tradutor {
                 saidaConcatenada.append(palavra).append(" ");
             }
         }
+
 
 
         return saidaConcatenada.toString();
