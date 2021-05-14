@@ -64,7 +64,7 @@ public class Tradutor {
             }*/
 
             for (String qtdUni : quantificadorUniversal) {
-                System.out.println("qtdUni: " + palavra);
+//                System.out.println("qtdUni: " + palavra);
                 if (palavra.equalsIgnoreCase(qtdUni)) {
                     saida.add(0, "∀x");
                     break;
@@ -87,7 +87,7 @@ public class Tradutor {
             }
 
             for (String qtdExi : quantificadorExistencial) {
-                System.out.println("qtdExi: " + palavra);
+//                System.out.println("qtdExi: " + palavra);
                 if (palavra.equalsIgnoreCase(qtdExi)) {
                     saida.add(0, "∃x");
                     break;
@@ -115,7 +115,7 @@ public class Tradutor {
             }
 
             for (String imp : condicional) {
-                System.out.println("imp: " + palavra);
+//                System.out.println("imp: " + palavra);
                 if (palavra.equalsIgnoreCase(imp)) {
 
                     if (frase[x].equalsIgnoreCase("um") || frase[x].equalsIgnoreCase("uma")) {
@@ -177,7 +177,7 @@ public class Tradutor {
             }
 
             for (String conj : conjuncao) {
-                System.out.println("conj: " + palavra);
+//                System.out.println("conj: " + palavra);
 
                 if (palavra.equalsIgnoreCase(conj)) {
                     saida.add(frase[x - 2] + "(x)");
@@ -187,7 +187,7 @@ public class Tradutor {
                     for (int i = x; i < frase.length; i++) {
 
                         for (String tot : total) {
-                            System.out.println(frase[i]);
+//                            System.out.println(frase[i]);
                             if (frase[i + 1].equalsIgnoreCase(tot) || i+1 == frase.length-1) {
                                 freio = true;
                                 flag = true;
@@ -210,7 +210,7 @@ public class Tradutor {
                         if (flag) {
                             variavel = variavel + "(" + frase[i] + ")";
                             List<String> listaTemp = new ArrayList<String>(Arrays.asList(total));
-                            System.out.println("frase[i] "+frase[i]);
+//                            System.out.println("frase[i] "+frase[i]);
                             listaTemp.add(frase[i]);
                             total = listaTemp.toArray(new String[0]);
                         } else {
@@ -240,9 +240,9 @@ public class Tradutor {
                             for (int i = x + 1; i < frase.length; i++) {
                                 variavel = variavel + frase[i];
                                 for (String tot : total) {
-                                    System.out.println("entrou aq");
+//                                    System.out.println("entrou aq");
                                     if (frase[i].equalsIgnoreCase(tot)) {
-                                        System.out.println("BREAAAAAAAAAAAAAAAAAAAAAKKK");
+//                                        System.out.println("BREAAAAAAAAAAAAAAAAAAAAAKKK");
                                         break;
                                     }
                                 }
@@ -256,7 +256,7 @@ public class Tradutor {
             }
 
             for (String disj : disjuncao) {
-                System.out.println("disj: " + palavra);
+//                System.out.println("disj: " + palavra);
 
                 if (palavra.equalsIgnoreCase(disj)) {
                     saida.add(frase[x - 2] + "(x)");
@@ -285,23 +285,15 @@ public class Tradutor {
             //Scrooge não ama nada que é estranho
             //Saída: ∀ t estranho (t) → ¬ ama (Scrooge, t)
 
-            for (String bic : bicondicional) {
-                System.out.println("bic: " + palavra);
 
-                if (palavra.equalsIgnoreCase(bic)) {
-                    System.out.println(":(");
-                }
-            }
 
             for (String neg : negacao) {
-                System.out.println("neg: " + palavra);
+//                System.out.println("neg: " + palavra);
 
                 if (palavra.equalsIgnoreCase(neg)) {
                     saida.add("¬");
 
                     saida.add(frase[x] + "(" + frase[x - 2] + ", x)");
-
-//                    TODO: Scrooge
 
                 }
             }
