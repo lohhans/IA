@@ -1,13 +1,109 @@
 package IA.Q2;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
+
+import net.sf.extjwnl.JWNLException;
+import net.sf.extjwnl.data.IndexWord;
+import net.sf.extjwnl.dictionary.Dictionary;
+
 /**
  * Hello world!
  *
  */
 public class App 
 {
-    public static void main( String[] args )
+    public static void main( String[] args ) throws FileNotFoundException, JWNLException, CloneNotSupportedException
     {
-        System.out.println( "Hello World!" );
+    	
+    	Checker form = new Checker ();
+    	form.check_if_then_conjunc_synonym("whether");
+    	String USAGE = "Usage: Examples [properties file]";
+        Set<String> HELP_KEYS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    	            "--help", "-help", "/help", "--?", "-?", "?", "/?"
+    	)));
+    	Dictionary dictionary = null;
+        
+        if (args.length != 1) {
+            dictionary = Dictionary.getDefaultResourceInstance();
+        } 
+        
+        else {
+            if (HELP_KEYS.contains(args[0])) {
+                System.out.println(USAGE);
+            } else {
+                FileInputStream inputStream = new FileInputStream(args[0]);
+                dictionary = Dictionary.getInstance(inputStream);
+            }
+        }
+      
+        if (dictionary != null) {
+        	
+        	String opcao = "";
+    		Scanner scanner = new Scanner(System.in);
+    		do {
+    			System.out
+    					.println("\n\n###  - TRADUZIR/FORMALIZAR UMA SENTENÇA EM LINGUAGEM NATURAL(LÍNGUA INGLESA) PARA LP ###");
+    			System.out.println("\n                  ========================");
+    			System.out.println("                  |     0 -  SAIR        |");
+    			System.out.println("                  |     1 - TRADUZIR     |");
+    			System.out.println("                  ========================\n");
+    			System.out.print("Opção -> ");
+    			opcao= scanner.nextLine();
+    			System.out.print("\n");
+    			
+    			switch (opcao) {
+    			
+    			case "0":
+    				break;
+    				
+    			case "1":
+    				
+    				System.out.print("Digite uma frase aqui: ");
+    				String phrase= scanner.nextLine();
+					// String phrase= "everyone who likes tire likes motorcycle, car, bus and airplane and bicycle"; ok
+    				// Everyone who loves Santa Claus likes reindeer ok
+    				// every yuppie is a lawyer  
+    				// Anyone who rides any Harley motorcycle is a tough guy (mais ou menos)
+    				// Every motorcyclist rides a Harley or a BMW ok
+    				// Anyone who assembles a BMW is a yuppie ok
+    				// Mary is a nice girl and John is a biker
+    				// John is not a lawyer, so Mary doesn't date John
+    				String[] inputList = phrase.split(" ");
+    	 	        ArrayList<String> sentence = new ArrayList<String>();
+    	 	       
+    	 	        
+    		 	    for(int i=0; i<inputList.length; i++) {
+    		 	    	sentence.add(inputList[i]);
+    		 	    }
+    		 	    System.out.print(sentence);
+    		 	    
+    		 	    Parser pars = new Parser (dictionary, sentence);
+    	        	ArrayList<IndexWord> sentence_analized = pars.run();
+    	        	form.translate(sentence, sentence_analized);
+    	        	
+    	        	
+    	        	
+    	        	
+    				break;
+    	                   
+    			
+    			default:
+    				System.out.println("Opção Inválida!");
+    				break;
+    			}
+    		} while (opcao != "0");
+    		
+ 	        
+        	  
+        }
+    	
+        
     }
 }
