@@ -40,45 +40,23 @@ public class App {
 
 			String opcao = "";
 			Scanner scanner = new Scanner(System.in);
-			do {
-				System.out.println(
-						"\n\n###  - TRADUZIR/FORMALIZAR UMA SENTENÇA EM LINGUAGEM NATURAL(LÍNGUA INGLESA) PARA LP ###");
-				System.out.println("\n                  ========================");
-				System.out.println("                  |     0 -  SAIR        |");
-				System.out.println("                  |     1 - TRADUZIR     |");
-				System.out.println("                  ========================\n");
-				System.out.print("Opção -> ");
-				opcao = scanner.nextLine();
-				System.out.print("\n");
+			
+			System.out.println(
+					"App tradutor de textos em inglês para Lógica de Predicados");
+			
+			System.out.print("Digite uma frase aqui para formalizar (traduzir): ");
+			String phrase = scanner.nextLine();
+			String[] inputList = phrase.split(" ");
+			ArrayList<String> sentence = new ArrayList<String>();
 
-				switch (opcao) {
+			for (int i = 0; i < inputList.length; i++) {
+				sentence.add(inputList[i]);
+			}
 
-				case "0":
-					break;
+			Parser pars = new Parser(dictionary, sentence);
+			ArrayList<IndexWord> sentence_analized = pars.run();
+			form.translate(sentence, sentence_analized);
 
-				case "1":
-
-					System.out.print("Digite uma frase aqui: ");
-					String phrase = scanner.nextLine();
-					String[] inputList = phrase.split(" ");
-					ArrayList<String> sentence = new ArrayList<String>();
-
-					for (int i = 0; i < inputList.length; i++) {
-						sentence.add(inputList[i]);
-					}
-					System.out.print(sentence);
-
-					Parser pars = new Parser(dictionary, sentence);
-					ArrayList<IndexWord> sentence_analized = pars.run();
-					form.translate(sentence, sentence_analized);
-
-					break;
-
-				default:
-					System.out.println("Opção Inválida!");
-					break;
-				}
-			} while (opcao != "0");
 
 		}
 

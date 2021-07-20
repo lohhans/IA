@@ -29,34 +29,36 @@ public class Parser {
 			.unmodifiableSet(new HashSet<>(Arrays.asList("--help", "-help", "/help", "--?", "-?", "?", "/?")));
 
 	public ArrayList<IndexWord> run() throws JWNLException, CloneNotSupportedException {
-		int verbs = 0;
-		int subs = 0;
-		int adjs = 0;
-		int adves = 0;
+		int verbo = 0;
+		int substantivo = 0;
+		int adjetivo = 0;
+		int adverbio = 0;
 
 		for (int i = 0; i < this.sentence.size(); i++) {
 			try {
 				token = dictionary.lookupIndexWord(POS.VERB, this.sentence.get(i));
 				if (token.getPOS().toString().contains("verb")) {
-					verbs += 1;
+					verbo += 1;
 				}
 				demonstrateListOperation(token, this.sentence.get(i));
 			} catch (NullPointerException e) {
+
 			}
 
 			try {
 				token = dictionary.lookupIndexWord(POS.NOUN, this.sentence.get(i));
 				if (token.getPOS().toString().contains("noun")) {
-					verbs += 1;
+					verbo += 1;
 				}
 				demonstrateListOperation(token, this.sentence.get(i));
 			} catch (NullPointerException f) {
 
 			}
+
 			try {
 				token = dictionary.lookupIndexWord(POS.ADJECTIVE, this.sentence.get(i));
 				if (token.getPOS().toString().contains("adjective")) {
-					adjs += 1;
+					adjetivo += 1;
 				}
 				demonstrateListOperation(token, this.sentence.get(i));
 			} catch (NullPointerException a) {
@@ -66,7 +68,7 @@ public class Parser {
 			try {
 				token = dictionary.lookupIndexWord(POS.ADVERB, this.sentence.get(i));
 				if (token.getPOS().toString().contains("adverb")) {
-					adves += 1;
+					adverbio += 1;
 				}
 				demonstrateListOperation(token, this.sentence.get(i));
 			} catch (NullPointerException p) {
@@ -74,7 +76,6 @@ public class Parser {
 			}
 		}
 		return sentence_analized;
-
 	}
 
 	private void demonstrateListOperation(IndexWord word, String token) throws JWNLException {
@@ -84,20 +85,12 @@ public class Parser {
 
 			if (word.getPOS().toString().contains("noun")) {
 				sentence_analized.add(word);
-				System.out.println("# Substantivo: " + token);
-
 			} else if (word.getPOS().toString().contains("adjective")) {
 				sentence_analized.add(word);
-				System.out.println("# Adjetivo: " + token);
 			} else if (word.getPOS().toString().contains("adverb")) {
 				sentence_analized.add(word);
-				System.out.println("# Adverbio: " + token);
-
-			}
-
-			else {
+			} else {
 				sentence_analized.add(word);
-				System.out.println("# Verbo: " + token);
 			}
 
 			PointerTargetNodeList hypernyms = PointerUtils.getDirectHypernyms(word.getSenses().get(0));
@@ -105,6 +98,7 @@ public class Parser {
 			String[] auxList = aux.split(" ");
 			ArrayList<String> synonyms = new ArrayList<String>();
 			Boolean flag = false;
+
 			for (int j = 0; j < auxList.length; j++) {
 				if (auxList[j].equals("Words:")) {
 					flag = true;
@@ -116,8 +110,6 @@ public class Parser {
 					synonyms.add(auxList[j].toString().replaceAll(",", ""));
 				}
 			}
-			System.out.println("Sinônimos: " + synonyms.toString());
 		}
 	}
-
 }
