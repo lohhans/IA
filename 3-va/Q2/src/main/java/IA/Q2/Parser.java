@@ -13,6 +13,7 @@ import net.sf.extjwnl.data.PointerUtils;
 import net.sf.extjwnl.data.list.PointerTargetNodeList;
 import net.sf.extjwnl.dictionary.Dictionary;
 
+// Classe padrao Parser usando WordNet
 public class Parser {
 	public Parser(Dictionary dictionary, ArrayList<String> sentence) throws JWNLException {
 		this.dictionary = dictionary;

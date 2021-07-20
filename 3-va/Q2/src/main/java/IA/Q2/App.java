@@ -16,8 +16,9 @@ import net.sf.extjwnl.dictionary.Dictionary;
 public class App {
 	public static void main(String[] args) throws FileNotFoundException, JWNLException, CloneNotSupportedException {
 
-		Checker form = new Checker();
-		form.check_if_then_conjunc_synonym("whether");
+		Checker checker = new Checker();
+		
+		// Inicio do Helper Class
 		String USAGE = "Usage: Examples [properties file]";
 		Set<String> HELP_KEYS = Collections
 				.unmodifiableSet(new HashSet<>(Arrays.asList("--help", "-help", "/help", "--?", "-?", "?", "/?")));
@@ -35,16 +36,18 @@ public class App {
 				dictionary = Dictionary.getInstance(inputStream);
 			}
 		}
+		// Fim do Helper Class
 
+		
+		// Obter dados do usuario para traduzir
 		if (dictionary != null) {
 
 			String opcao = "";
 			Scanner scanner = new Scanner(System.in);
 			
-			System.out.println(
-					"App tradutor de textos em inglês para Lógica de Predicados");
+			System.out.println("App tradutor de textos em inglês para Lógica de Predicados");
+			System.out.print("Digite uma frase aqui para formalizar (traduzir): \nEntrada -> ");
 			
-			System.out.print("Digite uma frase aqui para formalizar (traduzir): ");
 			String phrase = scanner.nextLine();
 			String[] inputList = phrase.split(" ");
 			ArrayList<String> sentence = new ArrayList<String>();
@@ -55,8 +58,9 @@ public class App {
 
 			Parser pars = new Parser(dictionary, sentence);
 			ArrayList<IndexWord> sentence_analized = pars.run();
-			form.translate(sentence, sentence_analized);
-
+			
+			System.out.print("Saida -> ");
+			checker.formalize(sentence, sentence_analized);
 
 		}
 
